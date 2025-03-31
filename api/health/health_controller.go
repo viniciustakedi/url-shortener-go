@@ -26,9 +26,5 @@ func (ctx *HealthController) HealthCheck(c *gin.Context) {
 		return
 	}
 
-	// response.Message(c, "API running sucessfully.", http.StatusOK)
-	c.JSON(http.StatusOK, gin.H{
-		"message": "API running sucessfully.",
-		"status":  http.StatusOK,
-	})
+	response.Message(c, "API is running.", http.StatusOK)
 }
