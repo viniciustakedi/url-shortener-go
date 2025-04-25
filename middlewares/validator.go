@@ -3,7 +3,7 @@ package middlewares
 import (
 	"fmt"
 	"reflect"
-	response "urlshortener/utils"
+	response "urlshortener/utils/response"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"

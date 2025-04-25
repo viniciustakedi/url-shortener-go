@@ -30,5 +30,4 @@ func main() {
 
 	fmt.Println("\nShutting down server...")
 	server.Shutdown(httpServer)
-
 }

@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 	"urlshortener/config"
-	router "urlshortener/server/routes"
+	router "urlshortener/routes"
 )
 
 const ShutdownTimeout = 10 * time.Second
