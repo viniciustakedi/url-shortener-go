@@ -77,3 +77,20 @@ func (ctx *UrlService) GetOriginalUrl(urlCode string) (string, error) {
 
 	return existingUrl.OriginalUrl, nil
 }
+
+func (ctx *UrlService) DeleteExpiredUrls() (string, error) {
+	urlsCollection := ctx.mongoDB.Collection("urls")
+
+	ctxBg := context.Background()
+
+	result, err := urlsCollection.DeleteMany(ctxBg, map[string]interface{}{
+		"expirationDate": map[string]interface{}{
+			"$lt": time.Now(),
+		},
+	})
+	if err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("%d urls were deleted", result.DeletedCount), nil
+}

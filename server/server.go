@@ -30,6 +30,8 @@ func Init(environment string) *http.Server {
 		}
 	}()
 
+	fmt.Printf("Server started in %s mode and running on port %s\n", environment, server.Addr)
+
 	return server
 }
 
