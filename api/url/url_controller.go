@@ -52,3 +52,12 @@ func (ctx *UrlController) GetOriginalUrl(c *gin.Context) {
 
 	response.Data(c, shortUrl, "Original URL found successfully!", http.StatusOK)
 }
+
+func (ctx *UrlController) DeleteExpiredUrlsWithCron() (string, error) {
+	msg, err := ctx.urlService.DeleteExpiredUrls()
+	if err != nil {
+		return "", err
+	}
+
+	return msg, nil
+}
