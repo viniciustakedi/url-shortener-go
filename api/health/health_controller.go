@@ -2,7 +2,7 @@ package health
 
 import (
 	"net/http"
-	response "urlshortener/utils"
+	response "urlshortener/utils/response"
 
 	"github.com/gin-gonic/gin"
 )

@@ -2,7 +2,8 @@ package url
 
 import (
 	"net/http"
-	response "urlshortener/utils"
+	urldto "urlshortener/api/url/dto"
+	response "urlshortener/utils/response"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,7 +21,14 @@ func NewUrlController(
 }
 
 func (ctx *UrlController) ShortenUrl(c *gin.Context) {
-	shortUrl, err := ctx.urlService.ShortenUrl()
+	payload := c.MustGet("payload").(*UrlPayload)
+
+	if err := urldto.CheckPostPayload(payload.Url, payload.DaysToExpire); err != nil {
+		response.Error(c, err.Error())
+		return
+	}
+
+	shortUrl, err := ctx.urlService.ShortenUrl(*payload)
 	if err != nil {
 		response.Error(c, "Error to shorten URL, contact support.")
 		return
