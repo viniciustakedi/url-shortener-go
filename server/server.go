@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 	"urlshortener/config"
-	router "urlshortener/server/routes"
+	router "urlshortener/routes"
 )
 
 const ShutdownTimeout = 10 * time.Second
@@ -29,6 +29,8 @@ func Init(environment string) *http.Server {
 			fmt.Printf("Error starting server: %v\n", err)
 		}
 	}()
+
+	fmt.Printf("Server started in %s mode and running on port %s\n", environment, server.Addr)
 
 	return server
 }

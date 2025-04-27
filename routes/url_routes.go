@@ -3,7 +3,6 @@ package router
 import (
 	"urlshortener/api/url"
 	"urlshortener/middlewares"
-	"urlshortener/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,7 +20,13 @@ func RegisterUrlRoutes(router *gin.RouterGroup) {
 			method:      "POST",
 			route:       "/url/shorten",
 			handler:     urlController.ShortenUrl,
-			middlewares: []gin.HandlerFunc{middlewares.PayloadValidatorMiddleware(&models.UrlPayload{})},
+			middlewares: []gin.HandlerFunc{middlewares.PayloadValidatorMiddleware(&url.UrlPayload{})},
+		},
+		{
+			method:      "GET",
+			route:       "/url/:shortUrl",
+			handler:     urlController.GetOriginalUrl,
+			middlewares: []gin.HandlerFunc{},
 		},
 	}
 
