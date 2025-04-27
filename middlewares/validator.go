@@ -19,7 +19,6 @@ func PayloadValidatorMiddleware(payload interface{}) gin.HandlerFunc {
 		payloadInstance := reflect.New(payloadType).Interface()
 
 		if err := c.ShouldBindJSON(payloadInstance); err != nil {
-			fmt.Printf("EEEError binding JSON: %v\n", err)
 			response.Error(c, "Invalid request payload")
 			c.Abort()
 			return

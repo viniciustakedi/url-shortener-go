@@ -21,19 +21,14 @@ func NewUrlController(
 }
 
 func (ctx *UrlController) ShortenUrl(c *gin.Context) {
-
-	var payload UrlPayload
-	if err := c.ShouldBindJSON(&payload); err != nil {
-		response.Error(c, "Invalid payload.")
-		return
-	}
+	payload := c.MustGet("payload").(*UrlPayload)
 
 	if err := urldto.CheckPostPayload(payload.Url, payload.DaysToExpire); err != nil {
 		response.Error(c, err.Error())
 		return
 	}
 
-	shortUrl, err := ctx.urlService.ShortenUrl(payload)
+	shortUrl, err := ctx.urlService.ShortenUrl(*payload)
 	if err != nil {
 		response.Error(c, "Error to shorten URL, contact support.")
 		return

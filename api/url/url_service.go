@@ -2,6 +2,7 @@ package url
 
 import (
 	"context"
+	"fmt"
 	"time"
 	"urlshortener/utils/code"
 
@@ -52,5 +53,5 @@ func (ctx *UrlService) ShortenUrl(data UrlPayload) (string, error) {
 		return "", err
 	}
 
-	return "http://takedi.dev/T9K1LD", nil
+	return fmt.Sprintf("%s/%s", domain, urlCode), nil
 }
