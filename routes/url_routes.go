@@ -25,8 +25,8 @@ func RegisterUrlRoutes(router *gin.RouterGroup) {
 		{
 			method:      "GET",
 			route:       "/url/:shortUrl",
-			handler:     urlController.ShortenUrl,
-			middlewares: []gin.HandlerFunc{middlewares.PayloadValidatorMiddleware(&url.UrlGetParam{})},
+			handler:     urlController.GetOriginalUrl,
+			middlewares: []gin.HandlerFunc{},
 		},
 	}
 

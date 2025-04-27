@@ -27,7 +27,6 @@ func PayloadValidatorMiddleware(payload interface{}) gin.HandlerFunc {
 		validate := validator.New()
 
 		if err := validate.Struct(payloadInstance); err != nil {
-			fmt.Printf("Orror binding JSON: %v\n", err)
 			response.Error(c, "Validation failed")
 			c.Abort()
 			return

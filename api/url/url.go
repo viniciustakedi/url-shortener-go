@@ -4,7 +4,7 @@ import "time"
 
 type UrlPayload struct {
 	Url          string `json:"url" binding:"required"`
-	DaysToExpire int    `json:"days_to_expire" binding:"required"`
+	DaysToExpire int    `json:"daysToExpire" binding:"required"`
 }
 
 type UrlGetParam struct {
@@ -12,9 +12,9 @@ type UrlGetParam struct {
 }
 
 type UrlDB struct {
-	Domain         string    `json:"domain"`
-	UrlCode        string    `json:"url_code"`
-	OriginalUrl    string    `json:"original_url"`
-	ExpirationDate time.Time `json:"expiration_date"`
-	CreatedAt      time.Time `json:"created_at"`
+	Domain         string    `json:"domain" bson:"domain"`
+	UrlCode        string    `json:"urlCode" bson:"urlCode"`
+	OriginalUrl    string    `json:"originalUrl" bson:"originalUrl"`
+	ExpirationDate time.Time `json:"expirationDate" bson:"expirationDate"`
+	CreatedAt      time.Time `json:"createdAt" bson:"createdAt"`
 }
