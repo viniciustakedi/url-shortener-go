@@ -55,3 +55,25 @@ func (ctx *UrlService) ShortenUrl(data UrlPayload) (string, error) {
 
 	return fmt.Sprintf("%s/%s", domain, urlCode), nil
 }
+
+func (ctx *UrlService) GetOriginalUrl(urlCode string) (string, error) {
+	urlsCollection := ctx.mongoDB.Collection("urls")
+
+	ctxBg := context.Background()
+
+	var existingUrl UrlDB
+	err := urlsCollection.FindOne(ctxBg, map[string]interface{}{
+		"urlCode": urlCode,
+	}).Decode(&existingUrl)
+	if err == mongo.ErrNoDocuments {
+		return "", fmt.Errorf("node url was found")
+	} else if err != nil {
+		return "", err
+	}
+
+	if existingUrl.ExpirationDate.Before(time.Now()) {
+		return "", fmt.Errorf("url expired")
+	}
+
+	return existingUrl.OriginalUrl, nil
+}
