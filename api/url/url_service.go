@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	domain = "https://takedi.com"
+	domain = "https://takedi.com/s"
 )
 
 type UrlService struct {
