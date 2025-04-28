@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	domain = "https://takedi.com"
+	domain = "https://takedi.com/s"
 )
 
 type UrlService struct {
@@ -23,7 +23,7 @@ func NewUrlService(mongoDB *mongo.Database) *UrlService {
 	}
 }
 
-func (ctx *UrlService) ShortenUrl(data UrlPayload) (string, error) {
+func (ctx *UrlService) ShortenUrl(data UrlPayload) (PostUrlResponse, error) {
 	urlsCollection := ctx.mongoDB.Collection("urls")
 
 	ctxBg := context.Background()
@@ -33,10 +33,13 @@ func (ctx *UrlService) ShortenUrl(data UrlPayload) (string, error) {
 
 	var existingUrl UrlDB
 	err := urlsCollection.FindOne(ctxBg, map[string]interface{}{
-		"OriginalUrl": data.Url,
+		"originalUrl": data.Url,
 	}).Decode(&existingUrl)
 	if err == nil {
-		return domain + "/" + existingUrl.UrlCode, nil
+		return PostUrlResponse{
+			Url:            fmt.Sprintf("%s/%s", domain, existingUrl.UrlCode),
+			ExpirationDate: existingUrl.ExpirationDate,
+		}, nil
 	}
 
 	// Prepare the data to insert
@@ -50,13 +53,16 @@ func (ctx *UrlService) ShortenUrl(data UrlPayload) (string, error) {
 
 	_, err = urlsCollection.InsertOne(ctxBg, dataToInsert)
 	if err != nil {
-		return "", err
+		return PostUrlResponse{}, err
 	}
 
-	return fmt.Sprintf("%s/%s", domain, urlCode), nil
+	return PostUrlResponse{
+		Url:            fmt.Sprintf("%s/%s", domain, urlCode),
+		ExpirationDate: expireDate,
+	}, nil
 }
 
-func (ctx *UrlService) GetOriginalUrl(urlCode string) (string, error) {
+func (ctx *UrlService) GetOriginalUrl(urlCode string) (GetUrlResponse, error) {
 	urlsCollection := ctx.mongoDB.Collection("urls")
 
 	ctxBg := context.Background()
@@ -66,16 +72,19 @@ func (ctx *UrlService) GetOriginalUrl(urlCode string) (string, error) {
 		"urlCode": urlCode,
 	}).Decode(&existingUrl)
 	if err == mongo.ErrNoDocuments {
-		return "", fmt.Errorf("node url was found")
+		return GetUrlResponse{}, fmt.Errorf("node url was found")
 	} else if err != nil {
-		return "", err
+		return GetUrlResponse{}, err
 	}
 
 	if existingUrl.ExpirationDate.Before(time.Now()) {
-		return "", fmt.Errorf("url expired")
+		return GetUrlResponse{}, fmt.Errorf("url expired")
 	}
 
-	return existingUrl.OriginalUrl, nil
+	return GetUrlResponse{
+		OriginalUrl:    existingUrl.OriginalUrl,
+		ExpirationDate: existingUrl.ExpirationDate,
+	}, nil
 }
 
 func (ctx *UrlService) DeleteExpiredUrls() (string, error) {
