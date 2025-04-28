@@ -18,12 +18,18 @@ func main() {
 	// 1. Create sign-up and sign-in system.
 	// 2. System to generate QRCode and track link access.
 
-	environment := flag.String("env", "development", "Environment to run the application in (development, staging, production)")
+	environment := flag.String("e", "development", "Environment to run the application in (development, staging, production)")
 
 	flag.Usage = func() {
-		log.Fatalf("Usage: %s [options]\nOptions:\n  -env string\n\tEnvironment to run the application in (development, staging, production)", flag.CommandLine.Name())
+		log.Fatalf(
+			"Usage: %s [options]\nOptions:\n  -env string\n\tEnvironment to run the application in (development, staging, production)",
+			flag.CommandLine.Name(),
+		)
+
 		os.Exit(1)
 	}
+
+	flag.Parse()
 
 	// Initialize the API config & Envs with flag
 	config.Init(*environment)
