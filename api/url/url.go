@@ -18,3 +18,13 @@ type UrlDB struct {
 	ExpirationDate time.Time `json:"expirationDate" bson:"expirationDate"`
 	CreatedAt      time.Time `json:"createdAt" bson:"createdAt"`
 }
+
+type PostUrlResponse struct {
+	Url            string    `json:"url"`
+	ExpirationDate time.Time `json:"expirationDate" bson:"expirationDate"`
+}
+
+type GetUrlResponse struct {
+	OriginalUrl    string    `json:"originalUrl" bson:"originalUrl"`
+	ExpirationDate time.Time `json:"expirationDate" bson:"expirationDate"`
+}
