@@ -80,6 +80,9 @@ The API will be available at `http://localhost:8080/api`.
 - `POST /api/url/shorten` – Send a long URL and the endpoint will return a short one.
 - `GET /api/url/:shortUrl` – Call this endpoint with a existent short url code to get the original. Useful to front.
 
+## 🔨 TO-DO List
+This project I want to build a sign-up and login system, some way to track access to link and generate a QRCode. Logged users can generate a life-time short url.
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request for any enhancements or bug fixes.
